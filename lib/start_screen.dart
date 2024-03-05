@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StartPage extends StatefulWidget{
   const StartPage(this.changeScreen,{super.key});
@@ -21,7 +22,10 @@ class _StartPageState extends State<StartPage> {
             color: const Color.fromARGB(145, 255, 255, 255),
             ),
             const SizedBox(height: 20,),
-            const Text('Learn Flutter the fun way!',style: TextStyle(color: Colors.white,fontSize: 28),),
+            Text('Learn Flutter the fun way!',
+            style: GoogleFonts.lato(
+              color: Colors.white,
+              fontSize: 28),),
             const SizedBox(height: 20,),
             OutlinedButton.icon(onPressed: widget.changeScreen,
             icon:const Icon(Icons.arrow_right_alt,color:Colors.white),

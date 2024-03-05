@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/answer_button.dart';
 import 'package:quiz_app/data/questions.dart';
-import 'package:quiz_app/result_screen.dart';
 import 'package:quiz_app/models/quiz_questions.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class QuestionScreen extends StatefulWidget {
-  const QuestionScreen({super.key});
+  const QuestionScreen(this.addAnswer,{super.key});
+  final void Function(String answer) addAnswer;
   @override
   State<QuestionScreen> createState() {
     return _QuestionState();
@@ -14,10 +15,6 @@ class QuestionScreen extends StatefulWidget {
 
 class _QuestionState extends State<QuestionScreen> {
   int index=0;
-  int score=0;
-  void correctOption(){
-
-  }
   @override
   Widget build(context) {
     final QuizQuestion currentQues = questions[index];
@@ -29,18 +26,19 @@ class _QuestionState extends State<QuestionScreen> {
         children: [
           Text(
             currentQues.question,
-            style: const TextStyle(
-              color: Colors.cyanAccent, 
-              fontSize: 27,
-              fontWeight: FontWeight.bold),
+            style: GoogleFonts.lato(
+              color: const Color.fromARGB(255, 190, 155, 175),
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+            ),
             textAlign: TextAlign.center,
-          ),
+            ),
           const SizedBox(height: 30),
           ...currentQues.getShuffled().map((item){
             return Button(item,(){
-              item==currentQues.options[0]?score++:null;
+              widget.addAnswer(item);
               setState(() {
-                index==questions.length-1?null:index++;
+                index++;
               });
             });
           }),
