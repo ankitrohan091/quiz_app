@@ -5,14 +5,32 @@ import 'package:quiz_app/data/questions.dart';
 class ResultScreen extends StatelessWidget{
   const ResultScreen(this.userAnswers,{super.key});
   final List<String> userAnswers;
-  @override
-  Widget build(context){
+
+  List<Map<String,Object>> getSummary(){
+    final List<Map<String,Object>> summary=[];
+    for(int i=0;i<userAnswers.length;i++){
+      summary.add({
+        'index':i,
+        'question':questions[i].question,
+        'answer': questions[i].options[0],
+        'selectedAnswer':userAnswers[i],
+      });
+    }
+    return summary;
+  }
+
+  int scoreCalculator(){
     int score=0;
-    for(int i=0;i<questions.length;i++){
-      if(userAnswers[i]==questions[i].options[0]){
+    getSummary().map((data){
+      if(data['answer']==data['selectedAnswer']){
         score++;
       }
-    }
+    });
+    return score;
+  }
+
+  @override
+  Widget build(context){
     final length=questions.length.toString();
     return SizedBox(
       width: double.infinity,
@@ -21,12 +39,22 @@ class ResultScreen extends StatelessWidget{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('You score $score out of $length'),
+            Text('You score $scoreCalculator() out of $length'),
             const SizedBox(height: 20,),
-            Text(questions[0].question),
-            const SizedBox(height: 20,),
-            Text(userAnswers[0]),
-            Text(questions[0].options[0]),
+            ...getSummary().map((item){
+              return Row(
+                children: [
+                  Text(((item['index'] as int) + 1).toString()),
+                  Column(
+                    children: [
+                      Text(item['question'] as String),
+                      Text(item['selectedAnswer']as String),
+                      Text(item['answer']as String)
+                    ],
+                  ),
+                ],
+              );
+            }),
             Button('Try Again', () {
               
             }),
